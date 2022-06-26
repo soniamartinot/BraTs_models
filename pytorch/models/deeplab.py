@@ -135,11 +135,11 @@ class Bottleneck(nn.Module):
 
 class ResNet(nn.Module):
 
-    def __init__(self, block, layers, num_classes=1000, drop_rate=0):
+    def __init__(self, block, n_input_channels, layers, num_classes=1000, drop_rate=0):
         super(ResNet, self).__init__()
         self.expansion = block.expansion
         self.inplanes = 64
-        self.conv1 = nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False)
+        self.conv1 = nn.Conv2d(n_input_channels, 64, kernel_size=7, stride=2, padding=3, bias=False)
         self.bn1 = nn.BatchNorm2d(64)
         self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
@@ -198,19 +198,19 @@ class ResNet(nn.Module):
 
 
 def resnet18(**kwargs):
-    return ResNet(BasicBlock, [2, 2, 2, 2], **kwargs)
+    return ResNet(BasicBlock, n_input_channels, [2, 2, 2, 2], **kwargs)
 
 
 def resnet34(**kwargs):
-    return ResNet(BasicBlock, [3, 4, 6, 3], **kwargs)
+    return ResNet(BasicBlock, n_input_channels, [3, 4, 6, 3], **kwargs)
 
 
 def resnet50(**kwargs):
-    return ResNet(Bottleneck, [3, 4, 6, 3], **kwargs)
+    return ResNet(Bottleneck, n_input_channels, [3, 4, 6, 3], **kwargs)
 
 
 def resnet101(**kwargs):
-    return ResNet(Bottleneck, [3, 4, 23, 3], **kwargs)
+    return ResNet(Bottleneck, n_input_channels, [3, 4, 23, 3], **kwargs)
 
 
 def resnet152(**kwargs):
@@ -268,9 +268,9 @@ class Encoder(nn.Module):
 
 class Deeplab_V3_Plus(nn.Module):
 
-    def __init__(self, class_num=2, drop_rate=0):
+    def __init__(self, class_num=2, n_input_channels=4, drop_rate=0):
         super(Deeplab_V3_Plus, self).__init__()
-        self.resnet = resnet50(drop_rate=drop_rate)
+        self.resnet = resnet50(drop_rate=drop_rate, n_input_channels=n_input_channels)
         self.conv0 = conv1x1(64, 256, drop_rate)
         self.encoder = Encoder(drop_rate)
         self.conv1 = conv3x3(768, 512, drop_rate)
