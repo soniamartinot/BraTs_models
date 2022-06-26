@@ -283,9 +283,7 @@ class Deeplab_V3_Plus(nn.Module):
     def forward(self, x):
         y, low_y = self.resnet(x)
         low_y = self.conv0(low_y)
-        print(low_y.shape)
         y = self.encoder(y)
-        print(y.shape)
         y = torch.cat([low_y, y], dim=1)
         y = self.conv1(y)
         y = self.conv2(y)
@@ -307,4 +305,3 @@ def deeplab_test():
     print(y.size())
 
 #deeplab_test()
-
