@@ -197,19 +197,19 @@ class ResNet(nn.Module):
         return torch.cat((x1,x2,x3,x4), 1), low_x
 
 
-def resnet18(**kwargs):
+def resnet18(n_input_channels, **kwargs):
     return ResNet(BasicBlock, n_input_channels, [2, 2, 2, 2], **kwargs)
 
 
-def resnet34(**kwargs):
+def resnet34(n_input_channels, **kwargs):
     return ResNet(BasicBlock, n_input_channels, [3, 4, 6, 3], **kwargs)
 
 
-def resnet50(**kwargs):
+def resnet50(n_input_channels, **kwargs):
     return ResNet(Bottleneck, n_input_channels, [3, 4, 6, 3], **kwargs)
 
 
-def resnet101(**kwargs):
+def resnet101(n_input_channels, **kwargs):
     return ResNet(Bottleneck, n_input_channels, [3, 4, 23, 3], **kwargs)
 
 
