@@ -250,7 +250,7 @@ class Encoder(nn.Module):
         self.atr_conv3 = atrous_conv(512, 256, 18, drop_rate)
         self.avgpool = nn.AvgPool2d(2) #impossible due to 15/2 = 7.5
         self.conv2 = conv1x1(512, 256)
-        self.conv_cat = conv1x1(1280, 512)
+        self.conv_cat = conv1x1(1024, 512)
 
     def forward(self, x):
         y1 = self.conv1(x)
@@ -269,8 +269,9 @@ class Encoder(nn.Module):
 class Deeplab_V3_Plus(nn.Module):
 
     def __init__(self, class_num=2, n_input_channels=4, drop_rate=0):
+        
         super(Deeplab_V3_Plus, self).__init__()
-        self.resnet = resnet50(drop_rate=drop_rate, n_input_channels=n_input_channels)
+        self.resnet = resnet34(drop_rate=drop_rate, n_input_channels=n_input_channels)
         self.conv0 = conv1x1(64, 256, drop_rate)
         self.encoder = Encoder(drop_rate)
         self.conv1 = conv3x3(768, 512, drop_rate)
@@ -282,7 +283,9 @@ class Deeplab_V3_Plus(nn.Module):
     def forward(self, x):
         y, low_y = self.resnet(x)
         low_y = self.conv0(low_y)
+        print(low_y.shape)
         y = self.encoder(y)
+        print(y.shape)
         y = torch.cat([low_y, y], dim=1)
         y = self.conv1(y)
         y = self.conv2(y)
@@ -304,3 +307,4 @@ def deeplab_test():
     print(y.size())
 
 #deeplab_test()
+
