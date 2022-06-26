@@ -205,8 +205,8 @@ def resnet34(n_input_channels, **kwargs):
     return ResNet(BasicBlock, n_input_channels, [3, 4, 6, 3], **kwargs)
 
 
-def resnet50(n_input_channels, **kwargs):
-    return ResNet(Bottleneck, n_input_channels, [3, 4, 6, 3], **kwargs)
+def resnet50(**kwargs):
+    return ResNet(Bottleneck, [3, 4, 6, 3], **kwargs)
 
 
 def resnet101(n_input_channels, **kwargs):
